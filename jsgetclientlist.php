@@ -1,0 +1,1 @@
+<html><head><meta http-equiv="refresh" content="5;URL=jsgetclientlist.php"></head><body><script language="JavaScript" src="clientlist.php"></script></body></html>
