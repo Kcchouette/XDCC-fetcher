@@ -6,8 +6,7 @@ if (substr(php_uname(), 0, 7) == "Windows" || $showrealtime == true) {
 	header("Location: client.php?" . $_SERVER["QUERY_STRING"]);
 }
 else {
-	exec("2>/dev/null 1>&2 php-cgi client.php '&" . 
-$_SERVER["QUERY_STRING"] . "' &");
+	exec("2>/dev/null 1>&2 php-cgi client.php '&" . $_SERVER["QUERY_STRING"] . "' &");
 	header("Location: index.php?clientstarted=yes&" . $_SERVER["QUERY_STRING"]);
 }
 
