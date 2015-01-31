@@ -68,7 +68,7 @@ function xfdie () {
 		if (($GLOBALS["fp"]) && (!feof($GLOBALS["fp"]))) {
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE");
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE " . $GLOBALS["pack"]);
-			xfwrite("QUIT :XDCC Fetcher 0.1 beta (build 20050305) http://xdccfetcher.sourceforge.net");
+			xfwrite("QUIT :XDCC Fetcher");
 			sleep(5);
 			if (!feof($GLOBALS["fp"])) { fclose($GLOBALS["fp"]); }
 		}
@@ -109,7 +109,7 @@ while (1 == 1) {
 	else {
 		stream_set_blocking($fp,0);
 		xfwrite("NICK " . $nick);
-		xfwrite("USER " . $nick . " \"xdccfetcher.com\" \"$server\" :xdccfetcher.sourceforge.net");
+		xfwrite("USER " . $nick . " \"xdccfetcher.com\" \"$server\" :XDCC Fetcher");
 
 		while (!feof($fp)) {
 			$fparr = array($fp);
