@@ -29,11 +29,10 @@ Go to the 'Process Options' tab, and change the 'CGI Script Timeout' to a larger
 
 
 
+XDCC Fetcher
+Copyright (C) 2015 Kcchouette
 
-
-
-
-XDCC Fetcher 0.1 beta (build 20050305)
+Based on XDCC Fetcher 0.1 beta (build 20050305)
 Copyright (C) 2005  Mark Cilia Vincenti
 
 This program is free software; you can redistribute it and/or
@@ -49,6 +48,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-Comments, bugs etc @ markciliavincenti@gmail.com
-

@@ -1,4 +1,4 @@
-<? include "config.php"; ?>
+<?php include "config.php"; ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -46,7 +46,7 @@ IMG {
 </head>
 <body bgcolor="#CCCCCC">
 <center><img src="logo.gif"></center>
-<?
+<?php
 
 echo '<table align="center" class="Section">
   <tr>
@@ -145,9 +145,6 @@ else {
 
 echo '</td>
   </tr>
-</table>
-<div class="CopyRight">XDCC Fetcher 0.1 beta. Copyright &copy; 2005 Mark Cilia Vincenti</div>
-<div class="CopyRight">Comments &amp; downloads @ http://xdccfetcher.sourceforge.net</div>';
-
+</table>';
+include 'footer.php';
 ?>
-

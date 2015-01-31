@@ -74,7 +74,7 @@ IMG {
     <td class="Section"><span class="TableTitle">Connected Clients</span><br>
     <div id="ClientList" class="ClientList"></div>
     <div id="ClientText" class="ClientText">
-    <?
+    <?php
     if (isset($_GET["clientstarted"]) && $_GET["clientstarted"] == "yes") {
     	echo "Client started! ";
     }
@@ -92,27 +92,27 @@ IMG {
           <tr>
             <td>IRC server address:</td>
             <td width="10"></td>
-            <td><input name="server" type="text" size="25" value="<? echo showContent("server"); ?>"></td>
+            <td><input name="server" type="text" size="25" value="<?php echo showContent("server"); ?>"></td>
           </tr>
           <tr>
             <td>IRC server port:</td>
             <td width="10"></td>
-            <td><input name="port" type="text" size="4" value="<? echo showContent("port","6667"); ?>"></td>
+            <td><input name="port" type="text" size="4" value="<?php echo showContent("port","6667"); ?>"></td>
           </tr>
           <tr>
             <td>IRC channel:</td>
             <td width="10"></td>
-            <td><input name="channel" type="text" size="15" value="<? echo showContent("channel"); ?>"></td>
+            <td><input name="channel" type="text" size="15" value="<?php echo showContent("channel"); ?>"></td>
           </tr>
           <tr>
             <td>User nick:</td>
             <td width="10"></td>
-            <td><input name="user" type="text" size="15" value="<? echo showContent("user"); ?>"></td>
+            <td><input name="user" type="text" size="15" value="<?php echo showContent("user"); ?>"></td>
           </tr>
           <tr>
             <td>Pack number:</td>
             <td width="10"></td>
-            <td><input name="pack" type="text" size="4" value="<? echo showContent("pack"); ?>"></td>
+            <td><input name="pack" type="text" size="4" value="<?php echo showContent("pack"); ?>"></td>
           </tr>
           <tr>
             <td align="center" colspan="3"><br>
@@ -122,9 +122,8 @@ IMG {
       </form></td>
   </tr>
 </table>
-<div class="CopyRight">XDCC Fetcher 0.1 beta. Copyright &copy; 2005 Mark Cilia Vincenti</div>
-<div class="CopyRight">Comments &amp; downloads @ http://xdccfetcher.sourceforge.net</div>
-<?
+<?php
+include 'footer.php';
 
 include "config.php";
 
@@ -188,26 +187,21 @@ function ShowClients() {
 </script></body>
 </html>";
 
-/* XDCC Fetcher 0.1 beta (build 20050305)
-Copyright (C) 2005  Mark Cilia Vincenti
+/*
+	This file is part of XDCC Fetcher.
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+        XDCC Fetcher is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 2 of the License, or
+        (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+        XDCC Fetcher is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-
-Comments, bugs etc @ markciliavincenti@gmail.com */
+        You should have received a copy of the GNU General Public License
+        along with XDCC Fetcher.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 ?>
-
-
-
