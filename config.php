@@ -1,4 +1,4 @@
-<?
+<?php
 
 // Download folder
 $downloadfolder = "c:\\xf\\downloads\\";
