@@ -22,13 +22,10 @@ You can stop the client in 3 ways:
 Note to IIS users:
 IIS has a CGI timeout that overrides the PHP setting. You can change this by doing the following:
 
-Click Start -> Settings -> Control Panel -> Administrative tools -> 
-Internet Information services
+Click Start -> Settings -> Control Panel -> Administrative tools -> Internet Information services
 Right click on the 'Web Sites' folder, and click properties.
 Under the Home Directories Tab, click 'Configuration...' at the bottom right.
 Go to the 'Process Options' tab, and change the 'CGI Script Timeout' to a larger value.
-
-
 
 
 
