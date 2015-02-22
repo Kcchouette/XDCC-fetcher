@@ -9,6 +9,9 @@ You will need 3 folders in all:
 
 To check that you have given the correct accesses, you can call install.php in your browser, which is saved in your script directory (eg: http://localhost/xf/install.php)
 
+You can run the project by the following methods:
+* a browser ; access it with index.php
+* a terminal emulator (konsole, GNOME Terminal, putty, etc) ; launch it with the command ``php client-script.php server='YourIrcServerAdress' port='YourIrcServerPort' channel='YourIrcChannel' user='TheIrcBotXdcc' pack='ThePackNumber'
 
 In case of any problems, do not hesitate to contact me.
 
