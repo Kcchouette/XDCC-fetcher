@@ -5,9 +5,6 @@ $raw['004']['pretext'] = "Connected to server (#xf#server#xf#)";
 $raw['004']['precolor'] = "red";
 function GetServerName($rawexplode) { $server = $rawexplode[3]; }
 
-
-
-
 $raw['376']['command'] = "IsOn";
 $raw['376']['ttext'] = "Checking if #xf#user#xf# is online...";
 $raw['376']['tcolor'] = "green";
@@ -20,9 +17,6 @@ function IsOn ($rawexplode) {
 	}
 	else { return false; }
 }
-
-
-
 
 $raw['303']['command'] = "JoinChannel";
 $raw['303']['ttext'] = "User is online. Attempting to join #xf#channel#xf#...";
@@ -39,9 +33,6 @@ function JoinChannel ($rawexplode) {
 	else { return false; }
 }
 
-
-
-
 $raw['366']['command'] = "SendRequest";
 $raw['366']['ttext'] = "Successfully joined #xf#channel#xf#. Attempting to retrieve pack #xf#pack#xf# from #xf#user#xf#";
 $raw['366']['tcolor'] = "green";
@@ -56,9 +47,6 @@ function SendRequest ($rawexplode) {
 	else { return false; }
 }
 
-
-
-
 $raw['PART']['command'] = "UserAction";
 $raw['PART']['ttext'] = "User has parted #xf#channel#xf#!";
 $raw['PART']['tcolor'] = "red";
@@ -67,23 +55,14 @@ function UserAction ($rawexplode) {
 	else { return false; }
 }
 
-
-
-
 $raw['JOIN']['command'] = "UserAction";
 $raw['JOIN']['ttext'] = "User has rejoined #xf#channel#xf#!";
 $raw['JOIN']['tcolor'] = "red";
-
-
-
 
 $raw['QUIT']['command'] = "UserAction";
 $raw['QUIT']['ttext'] = "User has quit IRC!";
 $raw['QUIT']['tcolor'] = "red";
 $raw['QUIT']['tquit'] = 1;
-
-
-
 
 $raw['NICK']['command'] = "ChangedNick";
 $raw['NICK']['ttext'] = "User has changed nick to #xf#user#xf#";
@@ -95,9 +74,6 @@ function ChangedNick ($rawexplode) {
 	}
 	else { return false; }
 }
-
-
-
 
 $raw['KICK']['command'] = "Kicked";
 $raw['KICK']['tcolor'] = "red";
@@ -114,57 +90,33 @@ function Kicked ($rawexplode) {
 	else { return false; }
 }
 
-
-
-
 $raw['471']['pretext'] = "Cannot join #xf#channel#xf# as the channel has too many users!";
 $raw['471']['precolor'] = "red";
 $raw['471']['quit'] = 1;
-
-
-
 
 $raw['473']['pretext'] = "Cannot join #xf#channel#xf# as the channel is invite-only!";
 $raw['473']['precolor'] = "red";
 $raw['473']['quit'] = 1;
 
-
-
-
 $raw['474']['pretext'] = "Cannot join #xf#channel#xf# as you are banned!";
 $raw['474']['precolor'] = "red";
 $raw['474']['quit'] = 1;
-
-
-
 
 $raw['475']['pretext'] = "Cannot join #xf#channel#xf# as the channel requires a key!";
 $raw['475']['precolor'] = "red";
 $raw['475']['quit'] = 1;
 
-
-
-
 $raw['477']['pretext'] = "Cannot join #xf#channel#xf# as you need a registered nick!";
 $raw['477']['precolor'] = "red";
 $raw['477']['quit'] = 1;
-
-
-
 
 $raw['485']['pretext'] = "Cannot join #xf#channel#xf# due to an unknown reason!";
 $raw['485']['precolor'] = "red";
 $raw['485']['quit'] = 1;
 
-
-
-
 $raw['401']['pretext'] = "User is NOT online!";
 $raw['401']['precolor'] = "";
 $raw['401']['quit'] = 1;
-
-
-
 
 $raw['433']['command'] = "ChangeNick";
 function ChangeNick ($rawexplode) {
@@ -177,13 +129,8 @@ function ChangeNick ($rawexplode) {
 	$GLOBALS['logfile'] = fopen($GLOBALS['logfilename'], 'a');
 }
 
-
-
-
 $raw['AUTH']['pretext'] = "#xf#get#xf#";
 $raw['AUTH']['precolor'] = "brown";
-
-
 
 $raw['PRIVMSG']['command'] = "VersionReply";
 $raw['PRIVMSG']['ttext'] = "Version request received from #xf#versionnick#xf#. Reply sent.";
@@ -196,14 +143,6 @@ function VersionReply ($rawexplode) {
 		return true;
 	}
 }
-
-
-
-
-
-
-
-
 
 function CheckRaw ($line) {
 	$rawexplode = explode(" ",$line);
@@ -228,8 +167,6 @@ function CheckRaw ($line) {
 function RawEcho ($text,$color) {
 	xfecho(preg_replace('/#xf#(\w+)#xf#/e', '\$GLOBALS["\\1"]', $text), $color);
 }
-
-
 
 /*
 	This file is part of XDCC Fetcher.

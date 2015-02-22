@@ -16,7 +16,7 @@ You can run the project by the following methods:
 * a browser ; access it with index.php
 * a terminal emulator (konsole, GNOME Terminal, putty, etc) ; launch it with the command ``php client-script.php server='YourIrcServerAdress' port='YourIrcServerPort' channel='YourIrcChannel' user='TheIrcBotXdcc' pack='ThePackNumber'
 
-##Some probl√ems
+##Some problems
 In case of any problems, don't hesitate to [open an issue](https://github.com/Kcchouette/XDCC-fetcher/issues/new)
 
 ##Stop the deamon (client)
