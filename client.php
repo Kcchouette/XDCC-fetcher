@@ -100,7 +100,7 @@ while ((!isset($nick)) || file_exists($logfilename)) {
 $logfile = fopen($logfilename, 'a');
 
 
-while (1 == 1) {
+while (true) {
 	$fp = @fsockopen($server, $port, $errno, $errstr, 30);
 	if (!$fp) {
 		xfecho("$errstr ($errno)");
