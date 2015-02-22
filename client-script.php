@@ -64,6 +64,7 @@ function xfdie () {
 			sleep(5);
 			if (!feof($GLOBALS["fp"])) { fclose($GLOBALS["fp"]); }
 		}
+		echo "Stopping DCC\n";
 		xfecho("process killed (connection status: " . connection_status() . ")");
 		fclose($GLOBALS["logfile"]);
 		$GLOBALS["killed"] = true;
@@ -73,12 +74,21 @@ function xfdie () {
 
 
 // Initialisation variables
-$server = $argv[1];
-$port = $argv[2];
-$channel = $argv[3];
+foreach ($argv as $arg) {
+        $e = explode("=", $arg);
+        if(count($e)==2)
+                $_GET[$e[0]]=$e[1];
+        else
+                $_GET[$e[0]]=0;
+}
+
+$server = ltrim(rtrim($_GET["server"]));
+$port = ltrim(rtrim($_GET["port"]));
+$channel = ltrim(rtrim($_GET["channel"]));
+
 if (substr($channel,0,1) != "#") { $channel = "#" . ltrim(rtrim($channel)); }
-$user = $argv[4];
-$pack = $argv[5];
+$user = $_GET["user"];
+$pack = $_GET["pack"];
 if (substr($pack,0,1) != "#") { $pack = "#" . ltrim(rtrim($pack)); }
 $join = 0;
 $joined = 0;
@@ -215,10 +225,13 @@ while (true) {
 									}
 								}
 							}
-							$currpercent = (int)(($currfilesize / $DCCfilesize) * 100);
+							if ($currfilesize != 0)
+								$currpercent = (int)(($currfilesize / $DCCfilesize) * 100);
+							else
+								$currpercent = 0;
 							if ($currpercent > $percent) {
 								$percent = $currpercent;
-								xfecho("$percent . "% completed - " . $DCCfilename . " - " . $nick . ", "", false);
+								xfecho($percent . "% completed - " . $DCCfilename . " - " . $nick, "", false);
 							}
 							if (!file_exists($logfilename)) {
 								xfdie();

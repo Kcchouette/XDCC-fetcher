@@ -6,7 +6,7 @@ if (substr(php_uname(), 0, 7) == "Windows" || $showrealtime == true) {
 	header("Location: client-script.php?" . $_SERVER["QUERY_STRING"]);
 }
 else {
-	shell_exec("php client-script.php '&" . $_SERVER["QUERY_STRING"] . "' >/dev/null 2>/dev/null &");
+	shell_exec("php client-script.php server='" . $_GET['server'] . "' port='" . $_GET['port'] . "' channel='" . $_GET['channel'] . "' user='" . $_GET['user'] . "' pack='" . $_GET['pack'] . "' >/dev/null 2>/dev/null &");
 	header("Location: index.php?clientstarted=yes&" . $_SERVER["QUERY_STRING"]);
 }
 
