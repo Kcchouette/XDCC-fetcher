@@ -1,27 +1,31 @@
-VERY BASIC INSTRUCTIONS
+#VERY BASIC INSTRUCTIONS
 
-You must have install php(5) + (apache/nginx) + php(5)-cgi
+##Install it!
+You must have install php(5) + (apache/nginx/others)
 
 You will need 3 folders in all:
-1 --- This will be a web-accessible folder (ideally password protected) that holds the scripts (eg: xf)
-2 --- This will be a folder (preferably non-web accessible) that holds the downloads. it is defined in config.php. CHMOD to 777 if on *nix, or give IUSR_MACHINENAME read/write access if on Windows (you might need to disable simple file sharing to do this).
-3 --- This will be a folder (preferably non-web accessible) that holds the logs. it is defined in config.php. CHMOD to 777 if on *nix, or give IUSR_MACHINENAME read/write access if on Windows (you might need to disable simple file sharing to do this).
 
-To check that you have given the correct accesses, you can call install.php in your browser, which is saved in your script directory (eg: http://localhost/xf/install.php)
+1. A folder (preferably non-web accessible) that holds the downloads. it is defined in config.php. CHMOD to 777 if on *nix, or give IUSR_MACHINENAME read/write access if on Windows (you might need to disable simple file sharing to do this).
+2. A folder (preferably non-web accessible) that holds the logs. it is defined in config.php. CHMOD to 777 if on *nix, or give IUSR_MACHINENAME read/write access if on Windows (you might need to disable simple file sharing to do this).
+3. (Optionnal) A web-accessible folder (ideally password protected) that holds the scripts (eg: xf)
 
+To check that you have given the correct accesses, you can run install.php into your browser, which is saved in your script directory (eg: http://localhost/xf/install.php)
+
+##Run it!
 You can run the project by the following methods:
 * a browser ; access it with index.php
 * a terminal emulator (konsole, GNOME Terminal, putty, etc) ; launch it with the command ``php client-script.php server='YourIrcServerAdress' port='YourIrcServerPort' channel='YourIrcChannel' user='TheIrcBotXdcc' pack='ThePackNumber'
 
-In case of any problems, do not hesitate to contact me.
+##Some probl√ems
+In case of any problems, don't hesitate to [open an issue](https://github.com/Kcchouette/XDCC-fetcher/issues/new)
 
+##Stop the deamon (client)
 You can stop the client in 3 ways:
-1) PRIVMSG it with "STOPXF s"
-2) Delete its logfile
-3) Use the logfile deleter script included in the interface
+* On IRC, with this private message ``STOPXF s``
+* Delete its logfile
+* Use the logfile deleter script included in the interface
 
-
-
+##Note
 Note to IIS users:
 IIS has a CGI timeout that overrides the PHP setting. You can change this by doing the following:
 
@@ -30,8 +34,7 @@ Right click on the 'Web Sites' folder, and click properties.
 Under the Home Directories Tab, click 'Configuration...' at the bottom right.
 Go to the 'Process Options' tab, and change the 'CGI Script Timeout' to a larger value.
 
-
-
+##License
 XDCC Fetcher
 Copyright (C) 2015 Kcchouette
 
