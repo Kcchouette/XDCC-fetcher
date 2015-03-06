@@ -1,13 +1,17 @@
 <?php
 
 // Download folder
-$downloadfolder = "c:\\xf\\downloads\\";
+$downloadfolder = "";
 
 // Logs folder
-$logsfolder = "c:\\xf\\logs\\";
+$logsfolder = "";
 
 // Debug Modes
 $showrealtime = false;
 $logall = false;
+
+//do not change
+$downloadfolder = realpath($downloadfolder) . "/";
+$logsfolder = realpath($logsfolder) . "/";
 
 ?>
