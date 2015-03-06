@@ -225,10 +225,12 @@ while (true) {
 									}
 								}
 							}
-							if ($currfilesize != 0)
+							if ($currfilesize != 0) {
 								$currpercent = (int)(($currfilesize / $DCCfilesize) * 100);
-							else
+							}
+							else {
 								$currpercent = 0;
+							}
 							if ($currpercent > $percent) {
 								$percent = $currpercent;
 								xfecho($percent . "% completed - " . $DCCfilename . " - " . $nick, "", false);
