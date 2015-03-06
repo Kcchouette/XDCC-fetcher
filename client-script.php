@@ -13,7 +13,9 @@ $dcc = "";
 $timer = "";
 
 function xfwrite ($data, $echo = true) {
-	if (substr($data,-1) != "\n") { $data .= "\n"; }
+	if (substr($data,-1) != "\n") {
+		$data .= "\n"; 
+	}
 	fwrite($GLOBALS["fp"],$data);
 	if ($echo) { xfecho($data, "blue"); }
 }
@@ -36,7 +38,9 @@ function savetofile () {
 
 function xfecho ($data, $color = "black", $ts = 1) {
 	if (($data != "") && ($data != "\n") && (file_exists($GLOBALS["logfilename"]))) {
-		if (substr($data,-1) != "\n") { $data .= "\n"; }
+		if (substr($data,-1) != "\n") {
+			$data .= "\n"; 
+		}
 
 		if ($ts == 1) {
 			$write = time() . " " . $color . " " . $data;
@@ -48,21 +52,32 @@ function xfecho ($data, $color = "black", $ts = 1) {
 			$write = $color . " " . $data;
 		}
 		fwrite($GLOBALS["logfile"],$write);
-		if ($GLOBALS["showrealtime"]) { echo $write; }
+		
+		if ($GLOBALS["showrealtime"]) {
+			echo $write; 
+		}
 	}
 }
 
 function xfdie () {
 	if ($GLOBALS["killed"] == false) {
-		if ($GLOBALS["handle"]) { fclose($GLOBALS["handle"]); }
-		if (($GLOBALS["dcc"]) && (!feof($GLOBALS["dcc"]))) { fclose($GLOBALS["dcc"]); }
-		if ($GLOBALS["lockfilename"] && $GLOBALS["lockfilename"] != "" && file_exists($GLOBALS["lockfilename"])) { @unlink($GLOBALS["lockfilename"]); }
+		if ($GLOBALS["handle"]) { 
+			fclose($GLOBALS["handle"]); 
+		}
+		if (($GLOBALS["dcc"]) && (!feof($GLOBALS["dcc"]))) {
+			fclose($GLOBALS["dcc"]);
+		}
+		if ($GLOBALS["lockfilename"] && $GLOBALS["lockfilename"] != "" && file_exists($GLOBALS["lockfilename"])) {
+			@unlink($GLOBALS["lockfilename"]);
+		}
 		if (($GLOBALS["fp"]) && (!feof($GLOBALS["fp"]))) {
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE");
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE " . $GLOBALS["pack"]);
 			xfwrite("QUIT :XDCC Fetcher");
 			sleep(5);
-			if (!feof($GLOBALS["fp"])) { fclose($GLOBALS["fp"]); }
+			if (!feof($GLOBALS["fp"])) {
+				fclose($GLOBALS["fp"]);
+			}
 		}
 		echo "Stopping DCC\n";
 		xfecho("process killed (connection status: " . connection_status() . ")");
@@ -76,20 +91,25 @@ function xfdie () {
 // Initialisation variables
 foreach ($argv as $arg) {
         $e = explode("=", $arg);
-        if(count($e)==2)
+        if(count($e)==2) {
                 $_GET[$e[0]]=$e[1];
-        else
+	}
+        else {
                 $_GET[$e[0]]=0;
+	}
 }
 
 $server = ltrim(rtrim($_GET["server"]));
 $port = ltrim(rtrim($_GET["port"]));
 $channel = ltrim(rtrim($_GET["channel"]));
-
-if (substr($channel,0,1) != "#") { $channel = "#" . ltrim(rtrim($channel)); }
+if (substr($channel,0,1) != "#") {
+	$channel = "#" . ltrim(rtrim($channel));
+}
 $user = $_GET["user"];
 $pack = $_GET["pack"];
-if (substr($pack,0,1) != "#") { $pack = "#" . ltrim(rtrim($pack)); }
+if (substr($pack,0,1) != "#") {
+	$pack = "#" . ltrim(rtrim($pack));
+}
 $join = 0;
 $joined = 0;
 $ison = 0;
@@ -120,7 +140,9 @@ while (true) {
 			$parse = explode(" ",$get);
 			CheckRaw($get);
 			if (rtrim($get) != "" && p(0) != "PING") {
-				if ($logall == true || (stristr($get,$user) && p(2) == $nick)) { xfecho($get); }
+				if ($logall == true || (stristr($get,$user) && p(2) == $nick)) {
+					xfecho($get);
+				}
 			}
 			if (p(0) == "PING") {
 				xfecho("PING? PONG!","green");
@@ -132,8 +154,12 @@ while (true) {
 			}
 			elseif ((p(1) == "PRIVMSG") && (p(2) == $nick) && (p(3) == ":COMMANDXF")) {
 				$string = "";
-				for ($x=4; $x<count($parse); $x++) { $string .= $parse[$x] . " "; }
-				if ($string != "") { xfwrite(rtrim($string)); }
+				for ($x=4; $x<count($parse); $x++) {
+					$string .= $parse[$x] . " ";
+				}
+				if ($string != "") {
+					xfwrite(rtrim($string));
+				}
 			}
 			elseif (!file_exists($logfilename)) {
 				xfdie();
@@ -145,7 +171,8 @@ while (true) {
 				@unlink($logfilename);
 				xfdie();
 			}
-			elseif ((stristr($get,$user)) && (stristr($get,"all slots full")) && (!stristr($get,"Added you")) && (p(1) == "NOTICE") && (p(2) == $nick)) {
+			elseif ((stristr($get,$user)) && (stristr($get,"all slots full")) 
+				&& (!stristr($get,"Added you")) && (p(1) == "NOTICE") && (p(2) == $nick)) {
 				$timer = time() + 30;
 			}
 			elseif ((time() >= $timer) && ($timer != 0)) {
@@ -218,10 +245,12 @@ while (true) {
 										$string = "";
 										$x = 4;
 										while (p(x) != "") {
-										$string .= $p($x) . " ";
-										$x++;
+											$string .= $p($x) . " ";
+											$x++;
 										}
-										if ($string != "") { xfwrite(rtrim($string)); }
+										if ($string != "") {
+											xfwrite(rtrim($string));
+										}
 									}
 								}
 							}
