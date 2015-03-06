@@ -41,7 +41,7 @@ $raw['366']['fcolor'] = "red";
 function SendRequest ($rawexplode) {
 	if ($GLOBALS['joined'] == 0) {
 		$GLOBALS['joined'] = 1;
-		xfwrite("PRIVMSG " . $GLOBALS['user'] . " :XDCC SEND " . $GLOBALS['pack'] . "", false);
+		xfwrite("PRIVMSG " . $GLOBALS['user'] . " :XDCC SEND " . $GLOBALS['pack'] . "", false);
 		return true;
 	}
 	else { return false; }
@@ -136,10 +136,10 @@ $raw['PRIVMSG']['command'] = "VersionReply";
 $raw['PRIVMSG']['ttext'] = "Version request received from #xf#versionnick#xf#. Reply sent.";
 $raw['PRIVMSG']['tcolor'] = "red";
 function VersionReply ($rawexplode) {
-	if (substr($rawexplode[3],0,10) == ":VERSION") {
+	if (substr($rawexplode[3],0,10) == ":VERSION") {
 		$versionnickparse = split('!',$rawexplode[0]);
 		$GLOBALS['versionnick'] = substr($versionnickparse[0],1);
-		xfwrite("NOTICE " . $GLOBALS['versionnick'] . " :VERSION XDCC Fetcher 0.1 beta - http://xdccfetcher.sourceforge.net", false);
+		xfwrite("NOTICE " . $GLOBALS['versionnick'] . " :VERSION XDCC Fetcher - https://github.com/Kcchouette/XDCC-fetcher", false);
 		return true;
 	}
 }
