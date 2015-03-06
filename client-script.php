@@ -13,11 +13,13 @@ $dcc = "";
 $timer = "";
 
 function xfwrite ($data, $echo = true) {
-	if (substr($data,-1) != "\n") {
+	if (substr($data, -1) != "\n") {
 		$data .= "\n"; 
 	}
-	fwrite($GLOBALS["fp"],$data);
-	if ($echo) { xfecho($data, "blue"); }
+	fwrite($GLOBALS["socket"], $data);
+	if ($echo) {
+		xfecho($data, "blue");
+	}
 }
 
 function p ($num) {
@@ -70,13 +72,13 @@ function xfdie () {
 		if ($GLOBALS["lockfilename"] && $GLOBALS["lockfilename"] != "" && file_exists($GLOBALS["lockfilename"])) {
 			@unlink($GLOBALS["lockfilename"]);
 		}
-		if (($GLOBALS["fp"]) && (!feof($GLOBALS["fp"]))) {
+		if (($GLOBALS["socket"]) && (!feof($GLOBALS["socket"]))) {
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE");
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE " . $GLOBALS["pack"]);
 			xfwrite("QUIT :XDCC Fetcher");
 			sleep(5);
-			if (!feof($GLOBALS["fp"])) {
-				fclose($GLOBALS["fp"]);
+			if (!feof($GLOBALS["socket"])) {
+				fclose($GLOBALS["socket"]);
 			}
 		}
 		echo "Stopping DCC\n";
@@ -91,18 +93,18 @@ function xfdie () {
 // Initialisation variables
 foreach ($argv as $arg) {
         $e = explode("=", $arg);
-        if(count($e)==2) {
-                $_GET[$e[0]]=$e[1];
+        if (count($e) == 2) {
+                $_GET[$e[0]] = $e[1];
 	}
         else {
-                $_GET[$e[0]]=0;
+                $_GET[$e[0]] = 0;
 	}
 }
 
 $server = ltrim(rtrim($_GET["server"]));
 $port = ltrim(rtrim($_GET["port"]));
 $channel = ltrim(rtrim($_GET["channel"]));
-if (substr($channel,0,1) != "#") {
+if (substr($channel, 0, 1) != "#") {
 	$channel = "#" . ltrim(rtrim($channel));
 }
 $user = $_GET["user"];
@@ -110,33 +112,36 @@ $pack = $_GET["pack"];
 if (substr($pack,0,1) != "#") {
 	$pack = "#" . ltrim(rtrim($pack));
 }
+
 $join = 0;
 $joined = 0;
 $ison = 0;
 $percent = -1;
-while ((!isset($nick)) || file_exists($logfilename)) {
+
+//test that the logfile doesn't exist
+do {
 	$nick = "xf" . rand(10000,99999);
 	$logfilename = $logsfolder . $nick . ".log";
 	$delfilename = $logsfolder . $nick . ".del";
-}
+}while(file_exists($logfilename));
+
 $logfile = fopen($logfilename, 'a');
 
-
 while (true) {
-	$fp = @fsockopen($server, $port, $errno, $errstr, 30);
-	if (!$fp) {
+	$socket = @fsockopen($server, $port, $errno, $errstr, 30);
+	if (!$socket) {
 		xfecho("$errstr ($errno)");
 		xfdie();
 	}
 	else {
-		stream_set_blocking($fp,0);
+		stream_set_blocking($socket, 0); //non blocking
 		xfwrite("NICK " . $nick);
 		xfwrite("USER " . $nick . " \"xdccfetcher.com\" \"$server\" :XDCC Fetcher");
 
-		while (!feof($fp)) {
-			$fparr = array($fp);
-			stream_select($fparr, $write = NULL, $except = NULL, 3);
-			$get = fgets($fp);
+		while (!feof($socket)) {
+			$socketarr = array($socket);
+			stream_select($socketarr, $write = NULL, $except = NULL, 3);
+			$get = fgets($socket);
 			$parse = explode(" ",$get);
 			CheckRaw($get);
 			if (rtrim($get) != "" && p(0) != "PING") {
@@ -229,8 +234,8 @@ while (true) {
 
 						while (!feof($dcc)) {
 							savetofile();
-							if (!feof($fp)) {
-								$get = fgets($fp);
+							if (!feof($socket)) {
+								$get = fgets($socket);
 								if ($get) {
 									$parse = explode(" ",$get);
 									if (p(0) == "PING") {
