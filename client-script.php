@@ -16,7 +16,7 @@ function xfwrite ($data, $echo = true) {
 	if (substr($data, -1) != "\n") {
 		$data .= "\n"; 
 	}
-	fwrite($GLOBALS["socket"], $data);
+	fwrite($GLOBALS["stream_socket"], $data);
 	if ($echo) {
 		xfecho($data, "blue");
 	}
@@ -53,7 +53,7 @@ function xfecho ($data, $color = "black", $ts = 1) {
 		else {
 			$write = $color . " " . $data;
 		}
-		fwrite($GLOBALS["logfile"],$write);
+		fwrite($GLOBALS["logfile"], $write);
 		
 		if ($GLOBALS["showrealtime"]) {
 			echo $write; 
@@ -72,13 +72,13 @@ function xfdie () {
 		if ($GLOBALS["lockfilename"] && $GLOBALS["lockfilename"] != "" && file_exists($GLOBALS["lockfilename"])) {
 			@unlink($GLOBALS["lockfilename"]);
 		}
-		if (($GLOBALS["socket"]) && (!feof($GLOBALS["socket"]))) {
+		if (($GLOBALS["stream_socket"]) && (!feof($GLOBALS["stream_socket"]))) {
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE");
 			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE " . $GLOBALS["pack"]);
 			xfwrite("QUIT :XDCC Fetcher");
 			sleep(5);
-			if (!feof($GLOBALS["socket"])) {
-				fclose($GLOBALS["socket"]);
+			if (!feof($GLOBALS["stream_socket"])) {
+				fclose($GLOBALS["stream_socket"]);
 			}
 		}
 		echo "Stopping DCC\n";
@@ -128,22 +128,23 @@ do {
 $logfile = fopen($logfilename, 'a');
 
 while (true) {
-	$socket = @fsockopen($server, $port, $errno, $errstr, 30);
-	if (!$socket) {
+	$stream_socket = @fsockopen($server, $port, $errno, $errstr, 30);
+	if (!$stream_socket) {
 		xfecho("$errstr ($errno)");
 		xfdie();
 	}
 	else {
-		stream_set_blocking($socket, 0); //non blocking
+		stream_set_blocking($stream_socket, 0); //non blocking
+		//rfc 1459
 		xfwrite("NICK " . $nick);
-		xfwrite("USER " . $nick . " \"xdccfetcher.com\" \"$server\" :XDCC Fetcher");
+		xfwrite("USER " . $nick . " " . $nick . " " .$server . " :XDCC Fetcher");
 
-		while (!feof($socket)) {
-			$socketarr = array($socket);
-			stream_select($socketarr, $write = NULL, $except = NULL, 3);
-			$get = fgets($socket);
-			$parse = explode(" ",$get);
+		while (!feof($stream_socket)) {
+			$streams = array($stream_socket);
+			stream_select($streams, $w = NULL, $e = NULL, 3);
+			$get = fgets($stream_socket);
 			CheckRaw($get);
+			$parse = explode(" ", $get);
 			if (rtrim($get) != "" && p(0) != "PING") {
 				if ($logall == true || (stristr($get,$user) && p(2) == $nick)) {
 					xfecho($get);
@@ -234,8 +235,8 @@ while (true) {
 
 						while (!feof($dcc)) {
 							savetofile();
-							if (!feof($socket)) {
-								$get = fgets($socket);
+							if (!feof($stream_socket)) {
+								$get = fgets($stream_socket);
 								if ($get) {
 									$parse = explode(" ",$get);
 									if (p(0) == "PING") {
