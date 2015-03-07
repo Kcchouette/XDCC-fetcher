@@ -7,6 +7,8 @@ register_shutdown_function("xfdie");
 include "config.php";
 include "raw.php";
 
+$weirdChar = "";
+
 $killed = false;
 $handle = "";
 $dcc = "";
@@ -183,9 +185,9 @@ while (true) {
 			}
 			elseif ((time() >= $timer) && ($timer != 0)) {
 				$timer = 0;
-				xfwrite("PRIVMSG " . $user . " :XDCC SEND " . $pack . "");
+				xfwrite("PRIVMSG " . $user . " :" . $weirdChar . "XDCC SEND " . $pack . $weirdChar);
 			}
-			elseif ((stristr(p(0),$user)) && (p(3) == ":DCC")) {
+			elseif ((stristr(p(0),$user)) && (p(3) == ":" . $weirdChar ."DCC")) {
 				if (p(4) == "SEND") {
 					echo "Starting DCC...\n";
 					$DCCfilesize = (int)(substr(p(8),0,-3));
@@ -203,7 +205,7 @@ while (true) {
 						xfdie();
 					}
 					xfecho("Attempting resume...");
-					xfwrite("PRIVMSG " . $user . " :DCC RESUME " . $DCCfilename . " " . $DCCport . " " . filesize($filename) . "");
+					xfwrite("PRIVMSG " . $user . " :" . $weirdChar . "DCC RESUME " . $DCCfilename . " " . $DCCport . " " . filesize($filename) . $weirdChar);
 				}
 				else {
 					xfecho("Connecting to $DCCip on port $DCCport ($DCCfilesize bytes)...");
@@ -296,7 +298,7 @@ while (true) {
 							fclose($dcc);
 							@unlink($lockfilename);
 							fclose($handle);
-							xfwrite("PRIVMSG " . $user . " :XDCC SEND " . $pack . "");
+							xfwrite("PRIVMSG " . $user . " :" . $weirdChar . "XDCC SEND " . $pack . $weirdChar);
 						}
 					}
 				}
