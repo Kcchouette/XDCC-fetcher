@@ -2,91 +2,91 @@
 
 set_time_limit(0);
 ignore_user_abort(true);
-register_shutdown_function("xfdie");
+register_shutdown_function('xfdie');
 
-include "config.php";
-include "raw.php";
+include 'config.php';
+include 'raw.php';
 
-$SOH_Char = '\x01';//Start Of Heading
+$SOH_Char = "\x01";//Start Of Heading
 
 $killed = false;
-$handle = "";
-$dcc = "";
-$timer = "";
+$handle = '';
+$dcc_stream = '';
+$timer = '';
 
 function xfwrite ($data, $echo = true) {
 	if (substr($data, -1) != "\n") {
 		$data .= "\n"; 
 	}
-	fwrite($GLOBALS["stream_socket"], $data);
+	fwrite($GLOBALS['stream_socket'], $data);
 	if ($echo) {
-		xfecho($data, "blue");
+		xfecho($data, 'blue');
 	}
 }
 
 function p ($num) {
-	if (isset($GLOBALS["parse"][$num])) {
-		return $GLOBALS["parse"][$num];
+	if (isset($GLOBALS['parse'][$num])) {
+		return $GLOBALS['parse'][$num];
 	}
 }
 
 function savetofile () {
-	$dccgettemp = "";
-	$dccgettemp = fgets($GLOBALS["dcc"],1024);
-	if ($dccgettemp != "") {
-		$GLOBALS["dccget"] = $dccgettemp;
-		$GLOBALS["currfilesize"] += strlen($dccgettemp);
-		fwrite($GLOBALS["handle"], $dccgettemp);
+	$dccgettemp = '';
+	$dccgettemp = fgets($GLOBALS['dcc_stream'], 1024);
+	if ($dccgettemp != '') {
+		$GLOBALS['dccget'] = $dccgettemp;
+		$GLOBALS['currfilesize'] += strlen($dccgettemp);
+		fwrite($GLOBALS['handle'], $dccgettemp);
 	}
 }
 
-function xfecho ($data, $color = "black", $ts = 1) {
-	if (($data != "") && ($data != "\n") && (file_exists($GLOBALS["logfilename"]))) {
-		if (substr($data,-1) != "\n") {
-			$data .= "\n"; 
+function xfecho ($data, $color = 'black', $ts = 1) {
+	if (($data != '') && ($data != "\n") && (file_exists($GLOBALS['logfilename']))) {
+		if (substr($data, -1) != "\n") {
+			$data .= "\n";
 		}
 
 		if ($ts == 1) {
-			$write = time() . " " . $color . " " . $data;
+			$write = time() . ' ' . $color . ' ' . $data;
 		}
-		elseif ($color == "") {
+		elseif ($color == '') {
 			$write = $data;
 		}
 		else {
-			$write = $color . " " . $data;
+			$write = $color . ' ' . $data;
 		}
-		fwrite($GLOBALS["logfile"], $write);
+		fwrite($GLOBALS['logfile'], $write);
 		
-		if ($GLOBALS["showrealtime"]) {
+		if ($GLOBALS['showrealtime']) {
 			echo $write; 
 		}
 	}
 }
 
 function xfdie () {
-	if ($GLOBALS["killed"] == false) {
-		if ($GLOBALS["handle"]) { 
-			fclose($GLOBALS["handle"]); 
+	if ($GLOBALS['killed'] == false) {
+		if ($GLOBALS['handle']) { 
+			fclose($GLOBALS['handle']); 
 		}
-		if (($GLOBALS["dcc"]) && (!feof($GLOBALS["dcc"]))) {
-			fclose($GLOBALS["dcc"]);
+		if (($GLOBALS['dcc_stream']) && (!feof($GLOBALS['dcc_stream']))) {
+			fclose($GLOBALS['dcc_stream']);
 		}
-		if ($GLOBALS["lockfilename"] && $GLOBALS["lockfilename"] != "" && file_exists($GLOBALS["lockfilename"])) {
-			@unlink($GLOBALS["lockfilename"]);
+		if ($GLOBALS['lockfilename'] && $GLOBALS['lockfilename'] != '' && file_exists($GLOBALS['lockfilename'])) {
+			@unlink($GLOBALS['lockfilename']);
 		}
-		if (($GLOBALS["stream_socket"]) && (!feof($GLOBALS["stream_socket"]))) {
-			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE");
-			xfwrite("PRIVMSG " . $GLOBALS["user"] . " :XDCC REMOVE " . $GLOBALS["pack"]);
-			xfwrite("QUIT :XDCC Fetcher");
+		if (($GLOBALS['stream_socket']) && (!feof($GLOBALS['stream_socket']))) {
+			xfwrite('PRIVMSG ' . $GLOBALS['user'] . ' :XDCC REMOVE');
+			xfwrite('PRIVMSG ' . $GLOBALS['user'] . ' :XDCC REMOVE ' . $GLOBALS['pack']);
+			xfwrite('QUIT :XDCC Fetcher');
 			sleep(5);
-			if (!feof($GLOBALS["stream_socket"])) {
-				fclose($GLOBALS["stream_socket"]);
+			if (!feof($GLOBALS['stream_socket'])) {
+				fclose($GLOBALS['stream_socket']);
 			}
 		}
 		echo "Stopping DCC\n";
-		xfecho("process killed (connection status: " . connection_status() . ")");
-		fclose($GLOBALS["logfile"]);
-		$GLOBALS["killed"] = true;
+		xfecho('process killed (connection status: ' . connection_status() . ')');
+		fclose($GLOBALS['logfile']);
+		$GLOBALS['killed'] = true;
 		die();
 	}
 }
@@ -94,7 +94,7 @@ function xfdie () {
 
 // Initialisation variables
 foreach ($argv as $arg) {
-        $e = explode("=", $arg);
+        $e = explode('=', $arg);
         if (count($e) == 2) {
                 $_GET[$e[0]] = $e[1];
 	}
@@ -103,16 +103,16 @@ foreach ($argv as $arg) {
 	}
 }
 
-$server = ltrim(rtrim($_GET["server"]));
-$port = ltrim(rtrim($_GET["port"]));
-$channel = ltrim(rtrim($_GET["channel"]));
-if (substr($channel, 0, 1) != "#") {
-	$channel = "#" . ltrim(rtrim($channel));
+$server = ltrim(rtrim($_GET['server']));
+$port = ltrim(rtrim($_GET['port']));
+$channel = ltrim(rtrim($_GET['channel']));
+if (substr($channel, 0, 1) != '#') {
+	$channel = '#' . ltrim(rtrim($channel));
 }
-$user = $_GET["user"];
-$pack = $_GET["pack"];
-if (substr($pack,0,1) != "#") {
-	$pack = "#" . ltrim(rtrim($pack));
+$user = $_GET['user'];
+$pack = $_GET['pack'];
+if (substr($pack, 0, 1) != '#') {
+	$pack = '#' . ltrim(rtrim($pack));
 }
 
 $join = 0;
@@ -122,9 +122,9 @@ $percent = -1;
 
 //test that the logfile doesn't exist
 do {
-	$nick = "xf" . rand(10000,99999);
-	$logfilename = $logsfolder . $nick . ".log";
-	$delfilename = $logsfolder . $nick . ".del";
+	$nick = 'xf' . rand(10000,99999);
+	$logfilename = $logsfolder . $nick . '.log';
+	$delfilename = $logsfolder . $nick . '.del';
 }while(file_exists($logfilename));
 
 $logfile = fopen($logfilename, 'a');
@@ -132,40 +132,40 @@ $logfile = fopen($logfilename, 'a');
 while (true) {
 	$stream_socket = @fsockopen($server, $port, $errno, $errstr, 30);
 	if (!$stream_socket) {
-		xfecho("$errstr ($errno)");
+		xfecho($errstr . ': ' . $errno);
 		xfdie();
 	}
 	else {
 		stream_set_blocking($stream_socket, 0); //non blocking
 		//rfc 1459
-		xfwrite("NICK " . $nick);
-		xfwrite("USER " . $nick . " " . $nick . " " .$server . " :XDCC Fetcher");
+		xfwrite('NICK ' . $nick);
+		xfwrite('USER ' . $nick . ' ' . $nick . ' ' .$server . ' :XDCC Fetcher');
 
 		while (!feof($stream_socket)) {
 			$streams = array($stream_socket);
 			stream_select($streams, $w = NULL, $e = NULL, 3);
 			$get = fgets($stream_socket);
 			CheckRaw($get);
-			$parse = explode(" ", $get);
-			if (rtrim($get) != "" && p(0) != "PING") {
-				if ($logall == true || (stristr($get,$user) && p(2) == $nick)) {
+			$parse = explode(' ', $get);
+			if (rtrim($get) != '' && p(0) != 'PING') {
+				if ($logall == true || (stristr($get, $user) && p(2) == $nick)) {
 					xfecho($get);
 				}
 			}
-			if (p(0) == "PING") {
-				xfecho("PING? PONG!","green");
-				xfwrite("PONG " . substr(p(1), 1),false);
+			if (p(0) == 'PING') {
+				xfecho('PING? PONG!','green');
+				xfwrite('PONG ' . substr(p(1), 1),false);
 			}
-			elseif ((p(1) == "PRIVMSG") && (p(2) == $nick) && (p(3) == ":STOPXF")) {
-				xfecho("Manual abort");
+			elseif ((p(1) == 'PRIVMSG') && (p(2) == $nick) && (p(3) == ':STOPXF')) {
+				xfecho('Manual abort');
 				xfdie();
 			}
-			elseif ((p(1) == "PRIVMSG") && (p(2) == $nick) && (p(3) == ":COMMANDXF")) {
-				$string = "";
-				for ($x=4; $x<count($parse); $x++) {
-					$string .= $parse[$x] . " ";
+			elseif ((p(1) == 'PRIVMSG') && (p(2) == $nick) && (p(3) == ':COMMANDXF')) {
+				$string = '';
+				for ($x = 4; $x < count($parse); $x++) {
+					$string .= $parse[$x] . ' ';
 				}
-				if ($string != "") {
+				if ($string != '') {
 					xfwrite(rtrim($string));
 				}
 			}
@@ -179,50 +179,51 @@ while (true) {
 				@unlink($logfilename);
 				xfdie();
 			}
-			elseif ((stristr($get,$user)) && (stristr($get,"all slots full")) 
-				&& (!stristr($get,"Added you")) && (p(1) == "NOTICE") && (p(2) == $nick)) {
+			elseif ((stristr($get,$user)) && (stristr($get, 'all slots full')) 
+				&& (!stristr($get, 'Added you')) && (p(1) == 'NOTICE') && (p(2) == $nick)) {
 				$timer = time() + 30;
 			}
 			elseif ((time() >= $timer) && ($timer != 0)) {
 				$timer = 0;
-				xfwrite("PRIVMSG " . $user . " :" . $SOH_Char . "XDCC SEND " . $pack . $SOH_Char);
+				xfwrite('PRIVMSG ' . $user . ' :' . $SOH_Char . 'XDCC SEND ' . $pack . $SOH_Char);
 			}
-			elseif ((stristr(p(0),$user)) && (p(3) == ":" . $SOH_Char ."DCC")) {
-				if (p(4) == "SEND") {
+			elseif ((stristr(p(0),$user)) && (p(3) == ':' . $SOH_Char .'DCC')) {
+				if (p(4) == 'SEND') {
 					echo "Starting DCC...\n";
-					$DCCfilesize = (int)(substr(p(8),0,-3));
+					$DCCfilesize = (int)(substr(p(8), 0, -3));
 					$DCCfilename = p(5);
 					$DCCip = long2ip(p(6));
 					$DCCport = p(7);
 					$filename = $downloadfolder . $DCCfilename;
 				}
-				elseif (p(4) == "ACCEPT") {
+				elseif (p(4) == 'ACCEPT') {
 					echo "Resume accepted...\n";
 				}
-				if ((file_exists($filename)) && (p(4) == "SEND")) {
+				if ((file_exists($filename)) && (p(4) == 'SEND')) {
 					if (filesize($filename) >= $DCCfilesize) {
-						xfecho("File already downloaded");
+						xfecho('File already downloaded');
 						xfdie();
 					}
-					xfecho("Attempting resume...");
-					xfwrite("PRIVMSG " . $user . " :" . $SOH_Char . "DCC RESUME " . $DCCfilename . " " . $DCCport . " " . filesize($filename) . $SOH_Char);
+					xfecho('Attempting resume...');
+					xfwrite('PRIVMSG ' . $user . ' :' . $SOH_Char . 'DCC RESUME ' . $DCCfilename . ' ' . $DCCport . ' ' . filesize($filename) . $SOH_Char);
 				}
 				else {
-					xfecho("Connecting to $DCCip on port $DCCport ($DCCfilesize bytes)...");
-					$dcc = @fsockopen($DCCip, $DCCport, $errno, $errstr, 30);
-					if (!$dcc) {
-						xfecho("$errstr ($errno)");
+					xfecho('Connecting to ' . $DCCip . ' on port ' . $DCCport . ' (' . $DCCfilesize . ' bytes)...');
+					//DCC stream
+					$dcc_stream = @fsockopen($DCCip, $DCCport, $errno, $errstr, 30);
+					if (!$dcc_stream) {
+						xfecho($errstr . ': ' . $errno);
 						xfdie();
 					}
 					else {
-						stream_set_blocking($dcc,0);
-						xfecho("connected...");
+						stream_set_blocking($dcc_stream,0);
+						xfecho('Connected...');
 						$filename = $downloadfolder . $DCCfilename;
-						if (file_exists($filename . ".lck")) {
-							$filename = $downloadfolder . $nick . ".sav";
+						if (file_exists($filename . '.lck')) {
+							$filename = $downloadfolder . $nick . '.sav';
 						}
 
-						$lockfilename = $filename . ".lck";
+						$lockfilename = $filename . '.lck';
 
 						$handle = fopen($lockfilename, 'a');
 						fclose($handle);
@@ -235,28 +236,28 @@ while (true) {
 						}
 						$handle = fopen($filename, 'a');
 
-						while (!feof($dcc)) {
+						while (!feof($dcc_stream)) {
 							savetofile();
 							if (!feof($stream_socket)) {
 								$get = fgets($stream_socket);
 								if ($get) {
-									$parse = explode(" ",$get);
-									if (p(0) == "PING") {
+									$parse = explode(' ', $get);
+									if (p(0) == 'PING') {
 										xfecho($get);
-										xfwrite("PONG " . substr(p(1), 1));
+										xfwrite('PONG ' . substr(p(1), 1));
 									}
-									elseif ((p(1) == "PRIVMSG") && (p(2) == $nick) && (p(3) == ":STOPXF")) {
-										xfecho("Manual abort");
+									elseif ((p(1) == 'PRIVMSG') && (p(2) == $nick) && (p(3) == ':STOPXF')) {
+										xfecho('Manual abort');
 										xfdie();
 									}
-									elseif ((p(1) == "PRIVMSG") && (p(2) == $nick) && (p(3) == ":COMMANDXF")) {
-										$string = "";
+									elseif ((p(1) == 'PRIVMSG') && (p(2) == $nick) && (p(3) == ':COMMANDXF')) {
+										$string = '';
 										$x = 4;
-										while (p(x) != "") {
-											$string .= $p($x) . " ";
+										while (p(x) != '') {
+											$string .= $p($x) . ' ';
 											$x++;
 										}
-										if ($string != "") {
+										if ($string != '') {
 											xfwrite(rtrim($string));
 										}
 									}
@@ -270,7 +271,7 @@ while (true) {
 							}
 							if ($currpercent > $percent) {
 								$percent = $currpercent;
-								xfecho($percent . "% completed - " . $DCCfilename . " - " . $nick, "", false);
+								xfecho($percent . '% completed - ' . $DCCfilename . ' - ' . $nick, '', false);
 							}
 							if (!file_exists($logfilename)) {
 								xfdie();
@@ -283,22 +284,22 @@ while (true) {
 								xfdie();
 							}
 							elseif ($currfilesize >= $DCCfilesize) {
-								xfecho("Downloaded!");
+								xfecho('Downloaded!');
 								xfdie();
 							}
 							elseif ($currfilesize > $DCCfilesize) {
-								xfecho("Current filesize is greater than expected! Aborting.");
+								xfecho('Current filesize is greater than expected! Aborting.');
 								xfdie();
 							}
-							$dccarr = array($dcc);
+							$dccarr = array($dcc_stream);
 							@stream_select($dccarr, $write = NULL, $except = NULL, 3);
 						}
 						if (filesize($filename) < $DCCfilesize) {
-							xfecho("aborted.");
-							fclose($dcc);
+							xfecho('Aborted.');
+							fclose($dcc_stream);
 							@unlink($lockfilename);
 							fclose($handle);
-							xfwrite("PRIVMSG " . $user . " :" . $SOH_Char . "XDCC SEND " . $pack . $SOH_Char);
+							xfwrite('PRIVMSG ' . $user . ' :' . $SOH_Char . 'XDCC SEND ' . $pack . $SOH_Char);
 						}
 					}
 				}
@@ -306,7 +307,7 @@ while (true) {
 		}
 	}
 
-	xfecho("Disconnected from server! Reconnecting in 60 seconds...");
+	xfecho('Disconnected from server! Reconnecting in 60 seconds...');
 	sleep(60);
 }
 
