@@ -1,191 +1,83 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
-<head>
-<title>XDCC Fetcher</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-TABLE.Section {
-	border:solid 1px #333333;
-	width:300;
-	margin-bottom: 25px;
-}
-TD {
-	font-family: Verdana, Arial;
-	font-size: 12px;
-	color: #333333;
-}
-TD.Section {
-	padding:5px;
-}
-.TableTitle {
-	position: relative;
-	top: -15px;
-	padding-left: 2px;
-	padding-right: 2px;
-	color: #333333;
-	background-color: #CCCCCC;
-	font-weight: bold;
-	font-size: 10px;
-}
-FORM {
-	margin: 0px;
-}
-INPUT {
-	font-size: 10px;
-	border:solid 1px #333333;
-	background-color: #FFFFFF;
-	color:#333333;
-}
-.ClientText {
-	font-weight: bold;
-	font-size: 10px;
-	color: #FF0000;
-}
-.ClientList {
-	font-size: 10px;
-	position: absolute;
-	visibility: hidden;
-}
+	<head>
+		<title>XDCC Fetcher</title>
+		<!--<link rel="stylesheet" href="main.css"> -->
 
-.ClientList A {
-	padding-left: 15px;
-	color: #333333;
-	font-size: 12px;
-}
-IMG {
-	width: 300px;
-	height: 32px;
-	border: 0px;
-	margin-top: 30px;
-	margin-bottom: 15px;
-}
-.CopyRight {
-	font-family: Verdana, Arial;
-	font-size: 10px;
-	color: #999999;
-	text-align: center;
-}
-</style>
-</head>
-<body bgcolor="#CCCCCC">
-<center><img src="logo.gif"></center>
-<table align="center" class="Section">
-  <tr>
-    <td class="Section"><span class="TableTitle">Connected Clients</span><br>
-    <div id="ClientList" class="ClientList"></div>
-    <div id="ClientText" class="ClientText">
-    <?php
-    if (isset($_GET["clientstarted"]) && $_GET["clientstarted"] == "yes") {
-    	echo "Client started! ";
-    }
-    elseif (isset($_GET["clientstopped"]) && $_GET["clientstopped"] == "yes") {
-    	echo "Client stopped! ";
-    }
-    ?>Loading client list...</div>
-    </td>
-  </tr>
-</table>
-<table align="center" class="Section">
-  <tr>
-    <td class="Section"><span class="TableTitle">Add New Client</span><br><form method="GET" action="startclient.php">
-        <table cellpadding="0" cellspacing="0">
-          <tr>
-            <td>IRC server address:</td>
-            <td width="10"></td>
-            <td><input name="server" type="text" size="25" value="<?php echo showContent("server"); ?>"></td>
-          </tr>
-          <tr>
-            <td>IRC server port:</td>
-            <td width="10"></td>
-            <td><input name="port" type="text" size="4" value="<?php echo showContent("port","6667"); ?>"></td>
-          </tr>
-          <tr>
-            <td>IRC channel:</td>
-            <td width="10"></td>
-            <td><input name="channel" type="text" size="15" value="<?php echo showContent("channel"); ?>"></td>
-          </tr>
-          <tr>
-            <td>User nick:</td>
-            <td width="10"></td>
-            <td><input name="user" type="text" size="15" value="<?php echo showContent("user"); ?>"></td>
-          </tr>
-          <tr>
-            <td>Pack number:</td>
-            <td width="10"></td>
-            <td><input name="pack" type="text" size="4" value="<?php echo showContent("pack"); ?>"></td>
-          </tr>
-          <tr>
-            <td align="center" colspan="3"><br>
-              <input type="submit" value="GO GET IT!"></td>
-          </tr>
-        </table>
-      </form></td>
-  </tr>
-</table>
-<?php
+		<!-- OMGCSS core CSS -->
+    <link href="https://fabienwang.github.io/omgcss/dist/css/omg.css" rel="stylesheet">
+
+	</head>
+	<body class="omgcontainer">
+    <header class="">
+      <h1 class="omgcenter"><a class="title" href="index.php">XDCC Fetcher</a></h1>
+    </header>
+
+		<section>
+			<table align="center">
+				<tr>
+					<th>Connected Clients<th>
+				</tr>
+				<tr>
+					<td>
+						<div id="ClientList" class="ClientList">Loading client list...</div>
+	    		</td>
+	  		</tr>
+			</table>
+		</section>
+<br>
+		<section>
+			<table align="center">
+			  <tr>
+			    <th>Add New Client<th>
+				</tr>
+				<tr>
+					<td>
+	        	<form method="GET" action="startclient.php" class="omgvertical">
+		          <input type="text" name="server" placeholder="IRC server address:" value="<?php echo showContent("server"); ?>">
+		          <input type="number" name="port" placeholder="IRC server port:" min="0" value="<?php echo showContent("port","6667"); ?>">
+							<input type="text" name="channel" placeholder="IRC channel:" value="<?php echo showContent("channel"); ?>">
+							<input type="text" name="channel" placeholder="User nick:" value="<?php echo showContent("user"); ?>">
+							<input type="number" name="pack" placeholder="Pack number:" min="-1" value="<?php echo showContent("pack"); ?>">
+							<input type="submit" value="GO GET IT! &raquo;">
+	        </form>
+					</td>
+			  </tr>
+			</table>
+		</section>
+<br>
+
+	<section>
+			<div id="notifCenter" class="omgmsg omgmain">
+				<h3 class="omgcenter">Notification</h3>
+					<p id="notif">
+					<?php
+					if (isset($_GET["clientstarted"]) && $_GET["clientstarted"] == "yes") {
+						echo "Client started! ";
+					}
+					elseif (isset($_GET["clientstopped"]) && $_GET["clientstopped"] == "yes") {
+						echo "Client stopped! ";
+					}
+					?>
+				</p>
+			</div>
+		</section>
+
+		<?php
 include 'footer.php';
 
 include "config.php";
 
 function showContent($field, $default = "") {
-	if (isset($_GET[$field])) {
-		if ($_GET[$field] == "") {
-			return $default;
-		}
-		else {
-			return $_GET[$field];
-		}
+	if (isset($_GET[$field]) && $_GET[$field] != "") {
+				return $_GET[$field];
 	}
 	else {
 		return $default;
 	}
 }
 
-echo "
-<iframe name=\"ClientRef\" src=\"jsgetclientlist.php\" width=\"0\" height=\"0\"></iframe>
-<script language=\"JavaScript\">
-var oldclients = new Array(9);
-var clients = new Array(9);
-var oldclientscounter = -2;
-var clientscounter = -1;
-var flag = 0;
-var counter = 0;
 
-function ShowClients() {
-	if (oldclientscounter == clientscounter) {
-		flag = 0;
-		for (counter = 0; counter <= clientscounter; counter++) {
-			if (clients[counter] != oldclients[counter]) { flag = 1; }
-		}
-	}
-	else {
-		flag = 1;
-	}
-	if (flag == 1) {
-		if (oldclientscounter >= 0) { document.getElementById('ClientList').innerHTML=''; }
-		for (counter = 0; counter <= clientscounter; counter++) {
-			document.getElementById('ClientList').innerHTML+=(counter + 1) + '<a href=\"showlog.php?log=' + clients[counter] + '\">' + clients[counter] + '</a><a href=\"showlog.php?log=' + clients[counter] + '\">view</a><a href=\"stopclient.php?log=' + clients[counter] + '\">stop</a><br>';
-		}
-		oldclients = clients;
-		oldclientscounter = clientscounter;
-		if (clientscounter >= 0) {
-			ClientList.style.visibility='visible';
-			ClientList.style.position='relative';
-			ClientText.style.visibility='hidden';
-			ClientText.style.position='absolute';
-			document.getElementById('ClientText').innerHTML='';
-		}
-		else {
-			ClientText.style.visibility='visible';
-			ClientText.style.position='relative';
-			ClientList.style.visibility='hidden';
-			ClientList.style.position='absolute';
-			document.getElementById('ClientText').innerHTML='There are currently no connected clients';
-		}
-	}
-}
-</script></body>
-</html>";
 
 /*
 	This file is part of XDCC Fetcher.
@@ -205,3 +97,48 @@ function ShowClients() {
 */
 
 ?>
+
+<script type='text/javascript'>
+
+setInterval(AjaxGetRequest, 5*1000 );//all 5 seconds
+
+function AjaxGetRequest() {
+	var req = new XMLHttpRequest();
+
+	req.open('GET', 'clientlist.php', true); //true for asynchronous
+
+	req.onreadystatechange = function () {
+		if (req.readyState == 4) { //4 == XMLHttpRequest.DONE ie8+
+			if((req.status == 200) || (req.status == 304)) {
+				var obj = JSON.parse(req.responseText);
+				ClientList(obj);
+			}
+			else {
+			}
+		}
+	};
+	req.send(null);
+}
+
+function ClientList(clients) {
+	document.getElementById('ClientList').innerHTML='';
+
+	document.getElementById('notif').innerHTML='';
+	document.getElementById('notifCenter').style.visibility="hidden";
+
+	for (counter = 0; counter < clients.length; ++counter) {
+		document.getElementById('ClientList').innerHTML+= (counter + 1) + '.';
+		document.getElementById('ClientList').innerHTML+= ' ' + clients[counter] + ': <u><a href="showlog.php?log=' + clients[counter] + '">View Log</a></u>';
+		document.getElementById('ClientList').innerHTML+= ' <u><a href="stopclient.php?log=' + clients[counter] + '">Stop it</a></u><br>';
+	}
+
+	if (document.getElementById('ClientList').innerHTML.length == 0){
+		document.getElementById('ClientList').innerHTML+='<span class="omgerr">There are currently no connected clients</span>';
+	}
+}
+</script>
+
+<script src="https://fabienwang.github.io/omgcss/dist/js/omg.js"></script>
+
+</body>
+</html>
