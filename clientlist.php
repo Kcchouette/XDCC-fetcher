@@ -1,22 +1,22 @@
 <?php
 
-$arr = array();
+	$arr = array();
 
-include "config.php";
+	include "config.php";
 
-$handler = opendir($logsfolder);
+	$handler = opendir($logsfolder);
 
-$counter = 0;
-while ($file = readdir($handler)) {
-	if ($file != '.' && $file != '..' && substr($file,-4) == ".log") {
-		array_push($arr, $file);
-		$counter++;
+	$counter = 0;
+	while ($file = readdir($handler)) {
+		if ($file != '.' && $file != '..' && substr($file,-4) == ".log") {
+			array_push($arr, $file);
+			$counter++;
+		}
 	}
-}
 
-echo json_encode($arr);
+	echo json_encode($arr);
 
-closedir($handler);
+	closedir($handler);
 
 /*
 	This file is part of XDCC Fetcher.
