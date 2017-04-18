@@ -1,6 +1,7 @@
-#VERY BASIC INSTRUCTIONS
+# VERY BASIC INSTRUCTIONS
 
-##Install it!
+## Install it!
+
 You must have install php(5) + (apache/nginx/others)
 
 You will need 3 folders in all:
@@ -16,16 +17,19 @@ You can run the project by the following methods:
 * a browser ; access it with index.php
 * a terminal emulator (konsole, GNOME Terminal, putty, etc) ; launch it with the command ``php client-script.php server='YourIrcServerAdress' port='YourIrcServerPort' channel='YourIrcChannel' user='TheIrcBotXdcc' pack='ThePackNumber'``
 
-##Some problems
+## Some problems
+
 In case of any problems, don't hesitate to [open an issue](https://github.com/Kcchouette/XDCC-fetcher/issues/new)
 
-##Stop the deamon (client)
+## Stop the deamon (client)
+
 You can stop the client in 3 ways:
 * On IRC, with this private message ``STOPXF s``
 * Delete its logfile
 * Use the logfile deleter script included in the interface
 
-##Note
+## Note
+
 Note to IIS users:
 IIS has a CGI timeout that overrides the PHP setting. You can change this by doing the following:
 
@@ -34,7 +38,8 @@ Right click on the 'Web Sites' folder, and click properties.
 Under the Home Directories Tab, click 'Configuration...' at the bottom right.
 Go to the 'Process Options' tab, and change the 'CGI Script Timeout' to a larger value.
 
-##License
+## License
+
 XDCC Fetcher
 Copyright (C) 2015 Kcchouette
 
